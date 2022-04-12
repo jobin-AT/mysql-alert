@@ -1,0 +1,44 @@
+cat <<EOF | oc apply -f -
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
+data:
+  config.yaml: |
+    enableUserWorkload: true
+    prometheusK8s: 
+      retention: 7d
+      externalLabels:
+        region: sea
+        environment: dev
+      volumeClaimTemplate:
+        spec:
+          storageClassName: thin
+          volumeMode: Filesystem
+          resources:
+            requests:
+              storage: 40Gi
+    alertmanagerMain:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: thin
+          resources:
+            requests:
+              storage: 5Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-workload-monitoring-config
+  namespace: openshift-user-workload-monitoring
+data:
+  config.yaml: |
+    prometheus: 
+        retention: 12h 
+        resources:
+          requests:
+            cpu: 200m 
+            memory: 1Gi
+EOF
