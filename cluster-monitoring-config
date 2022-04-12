@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  config.yaml: "enableUserWorkload: true\nprometheusK8s: \n  retention: 7d\n  externalLabels:\n
+    \   region: sea\n    environment: dev\n  volumeClaimTemplate:\n    spec:\n      storageClassName:
+    thin\n      volumeMode: Filesystem\n      resources:\n        requests:\n          storage:
+    40Gi\nalertmanagerMain:\n  volumeClaimTemplate:\n    spec:\n      storageClassName:
+    thin\n      resources:\n        requests:\n          storage: 5Gi\n"
+kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
